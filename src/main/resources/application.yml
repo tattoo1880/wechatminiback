@@ -1,0 +1,31 @@
+spring:
+  web:
+    cors:
+      allowed-origins: "*"
+      allowed-methods: GET, POST, PUT, DELETE, OPTIONS
+      allowed-headers: "*"
+      allow-credentials: true
+  r2dbc:
+    password: qwerty7788421
+    #    禁用ssl
+    url: r2dbc:mysql://localhost:3306/wechatmini?useSSL=false
+    name: wechatmini
+    username: root
+  #    pool:
+  #          initial-size: 1000
+  #          max-size: 2000
+  #          max-life-time: 30m # 连接最大存活时间，防止连接长时间未使用而被 MySQL 关闭
+  #          max-idle-time: 10m # 连接最大空闲时间
+  #          validation-query: SELECT 1 # 验证连接是否有效
+  #          max-acquire-time: 30s     # 连接的最长获取时间
+  #          max-create-connection-time: 30s # 最长创建连接时间
+  main:
+    allow-circular-references: true
+
+
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+
+server:
+  port: 8092
