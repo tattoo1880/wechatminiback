@@ -141,6 +141,58 @@ public class GetMp4Url {
 				}
 			}
 			
+			JsonElement checkelement2 = regularObj.getAsJsonObject("data")
+					.getAsJsonObject("threaded_conversation_with_injections_v2")
+					.getAsJsonArray("instructions")
+					.get(0)
+					.getAsJsonObject()
+					.getAsJsonArray("entries")
+					.get(0)
+					.getAsJsonObject()
+					.getAsJsonObject("content")
+					.getAsJsonObject("itemContent")
+					.getAsJsonObject("tweet_results")
+					.getAsJsonObject("result");
+			
+			if (checkelement2.getAsJsonObject().has("tweet")){
+				try {
+					System.out.println("含有tweet字段");
+					JsonElement newurl = checkelement2.getAsJsonObject().getAsJsonObject("tweet")
+							.getAsJsonObject("legacy")
+							.getAsJsonObject("entities")
+							.getAsJsonArray("media").get(0).getAsJsonObject()
+							.getAsJsonObject("video_info").getAsJsonArray("variants");
+//				System.out.println(newurl);
+					JsonArray jparrary = new JsonArray();
+					
+					for (JsonElement element : newurl.getAsJsonArray()) {
+						JsonObject jsonObject = element.getAsJsonObject();
+						if (jsonObject.get("content_type").getAsString().equals("video/mp4")) {
+							jparrary.add(jsonObject.get("url").getAsString());
+						}
+					}
+					System.out.println(jparrary);
+					String title = checkelement2.getAsJsonObject().getAsJsonObject("tweet")
+							.getAsJsonObject("legacy")
+							.get("full_text").getAsString();
+					
+					Mp4 mp4 = new Mp4();
+					mp4.setTitle(title);
+					mp4.setUrls(jparrary.toString());
+					mp4.setId(Long.parseLong(id));
+					
+					
+					return r2dbcEntityTemplate.insert(Mp4.class)
+							.using(mp4)
+							.doOnSuccess(result -> System.out.println("Data inserted successfully"));
+				} catch (NumberFormatException e) {
+					System.out.println("NumberFormatException");
+					return Mono.empty();
+				}
+			}
+					
+			
+			
 			JsonElement jsonElement = regularObj.getAsJsonObject("data")
 					.getAsJsonObject("threaded_conversation_with_injections_v2")
 					.getAsJsonArray("instructions")
@@ -159,6 +211,11 @@ public class GetMp4Url {
 					.getAsJsonObject()
 					.getAsJsonObject("video_info")
 					.getAsJsonArray("variants");
+			
+			
+			System.out.println("=====================================");
+			System.out.println(jsonElement);
+			System.out.println("=====================================");
 			
 			
 			String title = regularObj.getAsJsonObject("data")
