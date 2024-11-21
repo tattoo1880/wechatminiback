@@ -7,6 +7,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.Criteria;
+import org.springframework.data.relational.core.query.Query;
+import org.springframework.data.relational.core.query.Update;
 import org.springframework.stereotype.Component;
 import org.tattoo1880.wechatmini.Entity.Mp4;
 import reactor.core.publisher.Mono;
@@ -132,9 +135,25 @@ public class GetMp4Url {
 					mp4.setUrls(resultarray.toString());
 					mp4.setId(Long.parseLong(id));
 					
-					return r2dbcEntityTemplate.insert(Mp4.class)
-							.using(mp4)
-							.doOnSuccess(result -> System.out.println("Data inserted successfully"));
+					return r2dbcEntityTemplate
+							.selectOne(Query.query(Criteria.where("id").is(Long.parseLong(id))), Mp4.class)
+							.flatMap(existRecord ->{
+								return r2dbcEntityTemplate.update(Mp4.class)
+										.matching(Query.query(Criteria.where("id").is(Long.parseLong(id))))
+										.apply(Update.update("urls",mp4.getUrls())
+												.set("title",mp4.getTitle())
+												.set("updateTime",System.currentTimeMillis())
+										)
+										.then(Mono.just(mp4))
+										.doOnSuccess(result -> System.out.println("Data updated successfully"))
+										.doOnError(e -> System.out.println("Data updated failed"));
+							})
+							.switchIfEmpty(
+									r2dbcEntityTemplate.insert(Mp4.class)
+											.using(mp4)
+											.doOnSuccess(result -> System.out.println("Data inserted successfully"))
+											.doOnError(e -> System.out.println("Data inserted failed"))
+							);
 				} catch (JsonSyntaxException e) {
 					System.out.println("JsonSyntaxException");
 					return Mono.empty();
@@ -182,9 +201,31 @@ public class GetMp4Url {
 					mp4.setId(Long.parseLong(id));
 					
 					
-					return r2dbcEntityTemplate.insert(Mp4.class)
-							.using(mp4)
-							.doOnSuccess(result -> System.out.println("Data inserted successfully"));
+//					return r2dbcEntityTemplate.insert(Mp4.class)
+//							.using(mp4)
+//							.doOnSuccess(result -> System.out.println("Data inserted successfully"))
+//							.doOnError(e -> System.out.println("Data inserted failed"));
+					
+					
+					return r2dbcEntityTemplate
+							.selectOne(Query.query(Criteria.where("id").is(Long.parseLong(id))), Mp4.class)
+							.flatMap(existRecord ->{
+								return r2dbcEntityTemplate.update(Mp4.class)
+										.matching(Query.query(Criteria.where("id").is(Long.parseLong(id))))
+										.apply(Update.update("urls",mp4.getUrls())
+												.set("title",mp4.getTitle())
+												.set("updateTime",System.currentTimeMillis())
+										)
+										.then(Mono.just(mp4))
+										.doOnSuccess(result -> System.out.println("Data updated successfully"))
+										.doOnError(e -> System.out.println("Data updated failed"));
+							})
+							.switchIfEmpty(
+									r2dbcEntityTemplate.insert(Mp4.class)
+											.using(mp4)
+											.doOnSuccess(result -> System.out.println("Data inserted successfully"))
+											.doOnError(e -> System.out.println("Data inserted failed"))
+							);
 				} catch (NumberFormatException e) {
 					System.out.println("NumberFormatException");
 					return Mono.empty();
@@ -257,9 +298,25 @@ public class GetMp4Url {
 			
 			//!存入数据库
 			try {
-				return r2dbcEntityTemplate.insert(Mp4.class)
-						.using(mp4)
-						.doOnSuccess(result -> System.out.println("Data inserted successfully"));
+				return r2dbcEntityTemplate
+						.selectOne(Query.query(Criteria.where("id").is(Long.parseLong(id))), Mp4.class)
+						.flatMap(existRecord ->{
+							return r2dbcEntityTemplate.update(Mp4.class)
+									.matching(Query.query(Criteria.where("id").is(Long.parseLong(id))))
+									.apply(Update.update("urls",mp4.getUrls())
+											.set("title",mp4.getTitle())
+											.set("updateTime",System.currentTimeMillis())
+									)
+									.then(Mono.just(mp4))
+									.doOnSuccess(result -> System.out.println("Data updated successfully"))
+									.doOnError(e -> System.out.println("Data updated failed"));
+						})
+						.switchIfEmpty(
+								r2dbcEntityTemplate.insert(Mp4.class)
+										.using(mp4)
+										.doOnSuccess(result -> System.out.println("Data inserted successfully"))
+										.doOnError(e -> System.out.println("Data inserted failed"))
+						);
 						
 			} catch (Exception e) {
 				return Mono.empty();

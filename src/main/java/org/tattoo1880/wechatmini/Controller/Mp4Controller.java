@@ -34,5 +34,18 @@ public class Mp4Controller {
 		return mp4Service.deleteAll();
 	}
 	
+	@PostMapping("/deleteById")
+	public Mono<?> deleteById(@RequestBody Map obj) {
+		try {
+			Object id = obj.get("id");
+			System.out.println(id);
+			return mp4Service.delteById(Long.parseLong(id.toString()));
+		}
+		catch (Exception e) {
+			System.out.println(e);
+			return Mono.just("error");
+		}
+		
+	}
 	
 }

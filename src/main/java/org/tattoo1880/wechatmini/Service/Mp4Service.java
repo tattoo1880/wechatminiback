@@ -9,6 +9,9 @@ import org.tattoo1880.wechatmini.Entity.Mp4;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.data.relational.core.query.Criteria.where;
+import static org.springframework.data.relational.core.query.Query.query;
+
 @Service
 public class Mp4Service {
 
@@ -30,5 +33,10 @@ public class Mp4Service {
 	//todo deleteall
 	public Mono<Void> deleteAll(){
 		return r2dbcEntityTemplate.delete(Mp4.class).all().then();
+	}
+	
+	//todo deletebyid
+	public Mono<?> delteById(Long id){
+		return r2dbcEntityTemplate.delete(Mp4.class).matching(query(where("id").is(id))).all();
 	}
 }
