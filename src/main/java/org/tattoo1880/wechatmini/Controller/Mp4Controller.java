@@ -4,6 +4,7 @@ package org.tattoo1880.wechatmini.Controller;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.tattoo1880.wechatmini.Entity.Mp4;
 import org.tattoo1880.wechatmini.Service.Mp4Service;
@@ -29,6 +30,9 @@ public class Mp4Controller {
 
 	@Autowired
 	private Mp4Service mp4Service;
+	
+
+//	========
 	
 	@PostMapping("/findOne")
 	public Mono<Mp4> findAll(@RequestBody Map obj) {

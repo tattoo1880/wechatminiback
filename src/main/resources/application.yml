@@ -1,10 +1,16 @@
 spring:
-  web:
-    cors:
-      allowed-origins: "*"
-      allowed-methods: GET, POST, PUT, DELETE, OPTIONS
-      allowed-headers: "*"
-      allow-credentials: true
+#  web:
+#    cors:
+#      allowed-origins: "*"
+#      allowed-methods: GET, POST, PUT, DELETE, OPTIONS
+#      allowed-headers: "*"
+#      allow-credentials: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
   r2dbc:
     password: qwerty7788421
     #    禁用ssl
@@ -29,3 +35,4 @@ logging:
 
 server:
   port: 8092
+
