@@ -7,4 +7,6 @@ import org.tattoo1880.wechatmini.Entity.Mp4;
 
 @Repository
 public interface Mp4UrlRepositories extends R2dbcRepository<Mp4, Long> {
+
+
 }
