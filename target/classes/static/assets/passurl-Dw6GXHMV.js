@@ -1,0 +1,1 @@
+import{m as l,r as t}from"./index-BElxOaZ8.js";const c=l("passurl",()=>{const s=t({url:"",title:""});return{passurl:s,setPassUrl:(r,e)=>{s.value.url=r,s.value.title=e},getPassUrl:()=>s.value,clearPassUrl:()=>{s.value.url="",s.value.title=""}}});export{c as u};
