@@ -1,1 +1,0 @@
-import{_ as a,c,b as n,f as o,d as t,o as r}from"./index-xPTNUKjr.js";const _="/assets/indexmain-ObGaNHdd.jpg",m={__name:"IndexImage",setup(d){const e=_;return(l,p)=>{const s=t("el-image");return r(),c("div",null,[n(s,{src:o(e)},null,8,["src"])])}}},u=a(m,[["__scopeId","data-v-79286c1d"]]);export{u as default};
