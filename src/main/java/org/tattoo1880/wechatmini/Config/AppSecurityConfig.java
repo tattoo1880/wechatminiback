@@ -34,17 +34,15 @@ public class AppSecurityConfig {
 	SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 		http.authorizeExchange(
 				authorizeExchangeSpec -> {
-					authorizeExchangeSpec.pathMatchers("/js/**", "/css/**", "/images/**", "/webjars/**").permitAll()
-							.pathMatchers("/sse/**").permitAll()
-//							.pathMatchers("/checkToken/check").permitAll()
+					authorizeExchangeSpec
+							//! 静态static 全放开
+							.pathMatchers("/js/**", "/css/**", "/images/**", "/webjars/**", "/static/**").permitAll() // 静态资源路径
 							.anyExchange().permitAll();
 				}
 		)
 				.addFilterAt(customHeaderFilter, SecurityWebFiltersOrder.AUTHENTICATION) // 添加自定义过滤器
 				.csrf(ServerHttpSecurity.CsrfSpec::disable)
 				.formLogin(ServerHttpSecurity.FormLoginSpec::disable);
-		
-		
 		return http.build();
 		
 		

@@ -30,6 +30,21 @@ public class CustomHeaderValidationFilter implements WebFilter {
 		if(path.contains("login")){
 			return chain.filter(exchange);
 		}
+		if(path.contains("/user/saveorupdate")){
+			return chain.filter(exchange);
+		}
+		
+		//!不验证根路由
+		if(path.equals("/")){
+			return chain.filter(exchange);
+		}
+		//!不验证assets
+		if(path.contains("assets")){
+			return chain.filter(exchange);
+		}
+		if(path.contains("jpg") || path.contains("png") || path.contains("jpeg") || path.contains("gif") || path.contains("js") || path.contains("css") || path.contains("ico") || path.contains("svg")){
+			return chain.filter(exchange);
+		}
 		// 获取请求头
 		HttpHeaders headers = exchange.getRequest().getHeaders();
 		String customHeader = headers.getFirst("sec_token");

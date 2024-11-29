@@ -1,5 +1,6 @@
 package org.tattoo1880.wechatmini.Controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import reactor.core.publisher.Flux;
 @RestController
 @RequestMapping("/sse")
 @CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
+@Slf4j
 public class SseController {
 	
 	
@@ -32,7 +34,7 @@ public class SseController {
 		//! 心跳
 		Flux<String> heartbeat = Flux.interval(java.time.Duration.ofSeconds(10))
 				.map(i -> "heartbeat")
-				.doOnEach(signal -> System.out.println("Sending heartbeat"));
+				.doOnEach(signal -> log.warn("heartbeat"));
 		
 		return Flux.merge(clientDisconnected, heartbeat);
 	}

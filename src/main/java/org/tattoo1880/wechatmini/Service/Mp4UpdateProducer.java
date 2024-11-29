@@ -38,7 +38,7 @@ public class Mp4UpdateProducer {
 			}
 		}else {
 			//! 发送一个空对象，以便前端知道没有新的数据
-			System.out.println("没有新货物了!!!!!!!!");
+//			System.out.println("没有新货物了!!!!!!!!");
 			Mp4 mp4 = new Mp4();
 			mp4.setUrls("...");
 			mp4.setTitle("...");

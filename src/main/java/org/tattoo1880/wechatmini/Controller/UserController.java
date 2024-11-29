@@ -1,6 +1,7 @@
 package org.tattoo1880.wechatmini.Controller;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.tattoo1880.wechatmini.Entity.User;
@@ -13,6 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@Slf4j
 public class UserController {
 	
 	private final UserService userService;
@@ -50,6 +52,8 @@ public class UserController {
 	public Mono<User> login(@RequestBody Map<String, String> map) {
 		String username = map.get("username");
 		String password = map.get("password");
+		log.warn("{} 登录了",username);
+		
 		return userService.login(username, password);
 	}
 }

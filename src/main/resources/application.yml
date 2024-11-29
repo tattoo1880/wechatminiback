@@ -25,13 +25,34 @@ spring:
   #          validation-query: SELECT 1 # 验证连接是否有效
   #          max-acquire-time: 30s     # 连接的最长获取时间
   #          max-create-connection-time: 30s # 最长创建连接时间
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ""
+      timeout: 10000
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
   main:
     allow-circular-references: true
 
 
+
+
 logging:
   level:
-    org.springframework.r2dbc: DEBUG
+
+    org.springframework.r2dbc: warn
+    org.tattoo1880: warn
+
+#redis
+
+
 
 server:
   port: 8092
