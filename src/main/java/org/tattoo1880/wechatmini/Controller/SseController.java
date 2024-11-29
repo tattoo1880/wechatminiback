@@ -10,7 +10,7 @@ import org.tattoo1880.wechatmini.Service.Mp4UpdateConsumer;
 import reactor.core.publisher.Flux;
 @RestController
 @RequestMapping("/sse")
-@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(origins = "http://193.32.148.226:8092",allowCredentials = "true")
 @Slf4j
 public class SseController {
 	

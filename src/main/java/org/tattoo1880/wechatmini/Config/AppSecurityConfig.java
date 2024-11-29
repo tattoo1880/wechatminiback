@@ -52,7 +52,7 @@ public class AppSecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfig = new CorsConfiguration();
-		corsConfig.addAllowedOrigin("http://localhost:5173");  // 允许来自 Vue 前端的请求
+		corsConfig.addAllowedOrigin("http://193.32.148.226:8092");  // 允许来自 Vue 前端的请求
 		corsConfig.addAllowedMethod("*");  // 允许所有 HTTP 方法
 		corsConfig.addAllowedHeader("*");  // 允许所有请求头
 		corsConfig.setAllowCredentials(true);  // 允许带凭证的请求（如果有需要）
