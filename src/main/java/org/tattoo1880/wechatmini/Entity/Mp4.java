@@ -2,9 +2,7 @@ package org.tattoo1880.wechatmini.Entity;
 
 
 import com.google.gson.JsonArray;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -12,10 +10,12 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Table("mp4")
+@Table(name="mp4")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
 public class Mp4 {
 	
 	@Id

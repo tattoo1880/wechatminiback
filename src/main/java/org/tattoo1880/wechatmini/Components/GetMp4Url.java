@@ -5,6 +5,7 @@ import com.google.gson.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Criteria;
@@ -20,16 +21,16 @@ import java.io.IOException;
 public class GetMp4Url {
 	
 	
-//	@Autowired
-//	private R2dbcEntityTemplate r2dbcEntityTemplate;
+	@Autowired
+	private R2dbcEntityTemplate r2dbcEntityTemplate;
 	
-	private final R2dbcEntityTemplate r2dbcEntityTemplate;
-	
-	public GetMp4Url(R2dbcEntityTemplate r2dbcEntityTemplate) {
-		this.r2dbcEntityTemplate = r2dbcEntityTemplate;
-	}
-	
-	
+//	private final R2dbcEntityTemplate r2dbcEntityTemplate;
+//
+//	public GetMp4Url(R2dbcEntityTemplate r2dbcEntityTemplate) {
+//		this.r2dbcEntityTemplate = r2dbcEntityTemplate;
+//	}
+//
+//
 	public Mono<Mp4> getMp4Url(String testurl) {
 	
 //		String testurl = "https://x.com/__Inty__/status/1857212704030667004";
@@ -129,31 +130,8 @@ public class GetMp4Url {
 							.getAsJsonObject("result")
 							.getAsJsonObject("legacy")
 							.get("full_text").getAsString();
-					
-					Mp4 mp4 = new Mp4();
-					mp4.setTitle(title);
-					mp4.setUrls(resultarray.toString());
-					mp4.setId(Long.parseLong(id));
-					
-					return r2dbcEntityTemplate
-							.selectOne(Query.query(Criteria.where("id").is(Long.parseLong(id))), Mp4.class)
-							.flatMap(existRecord ->{
-								return r2dbcEntityTemplate.update(Mp4.class)
-										.matching(Query.query(Criteria.where("id").is(Long.parseLong(id))))
-										.apply(Update.update("urls",mp4.getUrls())
-												.set("title",mp4.getTitle())
-												.set("updateTime",System.currentTimeMillis())
-										)
-										.then(Mono.just(mp4))
-										.doOnSuccess(result -> System.out.println("Data updated successfully"))
-										.doOnError(e -> System.out.println("Data updated failed"));
-							})
-							.switchIfEmpty(
-									r2dbcEntityTemplate.insert(Mp4.class)
-											.using(mp4)
-											.doOnSuccess(result -> System.out.println("Data inserted successfully"))
-											.doOnError(e -> System.out.println("Data inserted failed"))
-							);
+
+					return getMp4Mono(id, resultarray, title);
 				} catch (JsonSyntaxException e) {
 					System.out.println("JsonSyntaxException");
 					return Mono.empty();
@@ -194,38 +172,8 @@ public class GetMp4Url {
 					String title = checkelement2.getAsJsonObject().getAsJsonObject("tweet")
 							.getAsJsonObject("legacy")
 							.get("full_text").getAsString();
-					
-					Mp4 mp4 = new Mp4();
-					mp4.setTitle(title);
-					mp4.setUrls(jparrary.toString());
-					mp4.setId(Long.parseLong(id));
-					
-					
-//					return r2dbcEntityTemplate.insert(Mp4.class)
-//							.using(mp4)
-//							.doOnSuccess(result -> System.out.println("Data inserted successfully"))
-//							.doOnError(e -> System.out.println("Data inserted failed"));
-					
-					
-					return r2dbcEntityTemplate
-							.selectOne(Query.query(Criteria.where("id").is(Long.parseLong(id))), Mp4.class)
-							.flatMap(existRecord ->{
-								return r2dbcEntityTemplate.update(Mp4.class)
-										.matching(Query.query(Criteria.where("id").is(Long.parseLong(id))))
-										.apply(Update.update("urls",mp4.getUrls())
-												.set("title",mp4.getTitle())
-												.set("updateTime",System.currentTimeMillis())
-										)
-										.then(Mono.just(mp4))
-										.doOnSuccess(result -> System.out.println("Data updated successfully"))
-										.doOnError(e -> System.out.println("Data updated failed"));
-							})
-							.switchIfEmpty(
-									r2dbcEntityTemplate.insert(Mp4.class)
-											.using(mp4)
-											.doOnSuccess(result -> System.out.println("Data inserted successfully"))
-											.doOnError(e -> System.out.println("Data inserted failed"))
-							);
+
+					return getMp4Mono(id, jparrary, title);
 				} catch (NumberFormatException e) {
 					System.out.println("NumberFormatException");
 					return Mono.empty();
@@ -284,18 +232,18 @@ public class GetMp4Url {
 			}
 			System.out.println(jsonArray);
 			
-			Mp4 mp4 = new Mp4();
-			mp4.setTitle(title);
-			mp4.setUrls(jsonArray.toString());
-//			mp4.setId(id);
-			//todo id = > long
-			mp4.setId(Long.parseLong(id));
-			
-			
-			System.out.println(mp4);
-			
-			
-			
+			Mp4 mp4obj = new Mp4();
+			mp4obj.setTitle(title);
+			mp4obj.setId(Long.parseLong(id));
+			mp4obj.setUrls(jsonArray.toString());
+
+
+//			System.out.println(mp4);
+
+
+
+
+
 			//!存入数据库
 			try {
 				return r2dbcEntityTemplate
@@ -303,17 +251,17 @@ public class GetMp4Url {
 						.flatMap(existRecord ->{
 							return r2dbcEntityTemplate.update(Mp4.class)
 									.matching(Query.query(Criteria.where("id").is(Long.parseLong(id))))
-									.apply(Update.update("urls",mp4.getUrls())
-											.set("title",mp4.getTitle())
+									.apply(Update.update("urls",mp4obj.getUrls())
+											.set("title",mp4obj.getTitle())
 											.set("updateTime",System.currentTimeMillis())
 									)
-									.then(Mono.just(mp4))
+									.then(Mono.just(mp4obj))
 									.doOnSuccess(result -> System.out.println("Data updated successfully"))
 									.doOnError(e -> System.out.println("Data updated failed"));
 						})
 						.switchIfEmpty(
 								r2dbcEntityTemplate.insert(Mp4.class)
-										.using(mp4)
+										.using(mp4obj)
 										.doOnSuccess(result -> System.out.println("Data inserted successfully"))
 										.doOnError(e -> System.out.println("Data inserted failed"))
 						);
@@ -329,5 +277,33 @@ public class GetMp4Url {
 		}
 		
 		
+	}
+
+	@NotNull
+	private Mono<Mp4> getMp4Mono(String id, JsonArray resultarray, String title) {
+		Mp4 mp4 = new Mp4();
+		mp4.setTitle(title);
+		mp4.setUrls(resultarray.toString());
+		mp4.setId(Long.parseLong(id));
+
+		return r2dbcEntityTemplate
+				.selectOne(Query.query(Criteria.where("id").is(Long.parseLong(id))), Mp4.class)
+				.flatMap(existRecord ->{
+					return r2dbcEntityTemplate.update(Mp4.class)
+							.matching(Query.query(Criteria.where("id").is(Long.parseLong(id))))
+							.apply(Update.update("urls",mp4.getUrls())
+									.set("title",mp4.getTitle())
+									.set("updateTime",System.currentTimeMillis())
+							)
+							.then(Mono.just(mp4))
+							.doOnSuccess(result -> System.out.println("Data updated successfully"))
+							.doOnError(e -> System.out.println("Data updated failed"));
+				})
+				.switchIfEmpty(
+						r2dbcEntityTemplate.insert(Mp4.class)
+								.using(mp4)
+								.doOnSuccess(result -> System.out.println("Data inserted successfully"))
+								.doOnError(e -> System.out.println("Data inserted failed"))
+				);
 	}
 }
