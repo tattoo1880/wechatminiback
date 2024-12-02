@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/mp4")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@CrossOrigin(origins = "http://193.32.150.11", allowCredentials = "true")
 public class Mp4Controller {
 	@Data
 	public class Mp4to {

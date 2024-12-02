@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/sse")
-@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(origins = "http://193.32.150.11",allowCredentials = "true")
 @Slf4j
 public class SseController {
 	
