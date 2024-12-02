@@ -1,1 +1,0 @@
-import{c as s,b as a,f as c,d as o,o as t}from"./index-BElxOaZ8.js";const r="/assets/indexmain-ObGaNHdd.jpg",d={__name:"IndexImage",setup(m){const e=r;return(l,_)=>{const n=o("el-image");return t(),s("div",null,[a(n,{src:c(e)},null,8,["src"])])}}};export{d as default};
