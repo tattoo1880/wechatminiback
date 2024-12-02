@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Table("mp4")
 @Data

@@ -42,7 +42,7 @@ public class CustomHeaderValidationFilter implements WebFilter {
 		if(path.contains("assets")){
 			return chain.filter(exchange);
 		}
-		if(path.contains("jpg") || path.contains("png") || path.contains("jpeg") || path.contains("gif") || path.contains("js") || path.contains("css") || path.contains("ico") || path.contains("svg")){
+		if( path.contains("mtest") || path.contains("jpg") || path.contains("png") || path.contains("jpeg") || path.contains("gif") || path.contains("js") || path.contains("css") || path.contains("ico") || path.contains("svg")){
 			return chain.filter(exchange);
 		}
 		// 获取请求头

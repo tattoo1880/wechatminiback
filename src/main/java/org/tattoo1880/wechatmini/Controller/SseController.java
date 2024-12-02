@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattoo1880.wechatmini.Service.Mp4UpdateConsumer;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 @RestController
 @RequestMapping("/sse")
 @CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
@@ -35,6 +37,7 @@ public class SseController {
 		Flux<String> heartbeat = Flux.interval(java.time.Duration.ofSeconds(10))
 				.map(i -> "heartbeat")
 				.doOnEach(signal -> log.warn("heartbeat"));
+		
 		
 		return Flux.merge(clientDisconnected, heartbeat);
 	}

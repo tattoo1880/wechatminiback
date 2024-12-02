@@ -38,6 +38,12 @@ spring:
           max-wait: -1
           max-idle: 8
           min-idle: 0
+
+    mongodb:
+      host: localhost
+      port: 27017
+      database: newtest
+
   main:
     allow-circular-references: true
 
@@ -46,9 +52,10 @@ spring:
 
 logging:
   level:
-
+    root: warn
     org.springframework.r2dbc: warn
-    org.tattoo1880: warn
+    org.tattoo1880: debug
+    org.springframework.data.r2dbc: error
 
 #redis
 
