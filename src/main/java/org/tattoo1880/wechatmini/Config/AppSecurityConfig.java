@@ -14,6 +14,8 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.reactive.config.CorsRegistry;
+import org.springframework.web.reactive.config.EnableWebFlux;
 import org.tattoo1880.wechatmini.Components.AppReactiveUserDetailService;
 import org.tattoo1880.wechatmini.Components.CustomHeaderValidationFilter;
 
@@ -22,7 +24,6 @@ import java.nio.file.PathMatcher;
 
 @Configuration
 @EnableWebFluxSecurity
-
 public class AppSecurityConfig {
 	
 	@Autowired
@@ -32,7 +33,8 @@ public class AppSecurityConfig {
 	CustomHeaderValidationFilter customHeaderFilter;
 	@Bean
 	SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		http.authorizeExchange(
+//		http.cors(corsSpec -> corsSpec.configurationSource(corsConfigurationSource()))
+				http.authorizeExchange(
 				authorizeExchangeSpec -> {
 					authorizeExchangeSpec
 							//! 静态static 全放开
@@ -48,18 +50,38 @@ public class AppSecurityConfig {
 		
 	}
 	
-	
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfig = new CorsConfiguration();
-		corsConfig.addAllowedOrigin("http://193.32.150.11");  // 允许来自 Vue 前端的请求
+		corsConfig.addAllowedOrigin("http://localhost:8092");  // 允许来自任何来源的请求
+		corsConfig.addAllowedOrigin("http://localhost:5173");  // 允许来自任何来源的请求
+		corsConfig.addAllowedOrigin("http://193.32.150.11:8092");  // 允许来自任何来源的请求
+		corsConfig.addAllowedOrigin("http://193.32.150.11");  // 允许来自任何来源的请求
 		corsConfig.addAllowedMethod("*");  // 允许所有 HTTP 方法
 		corsConfig.addAllowedHeader("*");  // 允许所有请求头
-		corsConfig.setAllowCredentials(true);  // 允许带凭证的请求（如果有需要）
-		
+		corsConfig.setAllowCredentials(true);  // 允许带凭证的请求2
+
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfig);  // 为所有路径配置 CORS
 		source.registerCorsConfiguration("/sse/**", corsConfig);  // 为 SSE 路径单独配置 CORS
-		source.registerCorsConfiguration("/**", corsConfig);  // 为其他路径配置 CORS
 		return source;
 	}
+
+//	@Bean
+//	public CorsConfigurationSource corsConfigurationSource() {
+//		CorsConfiguration corsConfig = new CorsConfiguration();
+//		corsConfig.addAllowedOrigin("*");  // 允许来自 Vue 前端的请求
+//		corsConfig.addAllowedMethod("*");  // 允许所有 HTTP 方法
+//		corsConfig.addAllowedHeader("*");  // 允许所有请求头
+//		corsConfig.setAllowCredentials(true);  // 允许带凭证的请求（如果有需要）
+//
+////		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+////		source.registerCorsConfiguration("/sse/**", corsConfig);  // 为 SSE 路径单独配置 CORS
+////		source.registerCorsConfiguration("/**", corsConfig);  // 为其他路径配置 CORS
+//		return source;
+//	}
+
+
+
+
 }

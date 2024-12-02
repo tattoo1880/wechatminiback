@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/token")
-@CrossOrigin(origins = "http://193.32.150.11",allowCredentials = "true")
+//@CrossOrigin
 public class TokenController {
 	
 	@Resource

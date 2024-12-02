@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/sse")
-@CrossOrigin(origins = "http://193.32.150.11",allowCredentials = "true")
+//@CrossOrigin
 @Slf4j
 public class SseController {
 	
@@ -31,15 +31,18 @@ public class SseController {
 	@GetMapping(value = "/updates", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<String> streamMp4Updates() {
 		Flux<String> clientDisconnected = mp4UpdateConsumer.getMp4Updates()
-				.doOnCancel(() -> System.out.println("Client disconnected"));
+				.doOnCancel(() -> System.out.println("Client disconnected"))
+				.doOnComplete(() -> System.out.println("Client completed"))
+				.doOnError(e -> System.out.println("Client error"))
+				.doFinally(signalType -> System.out.println("Client finally: " + signalType));
 		
 		//! 心跳
-		Flux<String> heartbeat = Flux.interval(java.time.Duration.ofSeconds(10))
+		Flux<String> heartbeat = Flux.interval(java.time.Duration.ofSeconds(2))
 				.map(i -> "heartbeat")
-				.doOnEach(signal -> log.warn("heartbeat"));
+				.doOnEach(signal -> System.out.println("Heartbeat: " + signal.get()));
 		
 		
-		return Flux.merge(clientDisconnected, heartbeat);
+		return Flux.mergeDelayError(1, clientDisconnected, heartbeat);
 	}
 
 }

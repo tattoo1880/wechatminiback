@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/mtest")
+//@CrossOrigin
 public class MtestController {
 	
 	

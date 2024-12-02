@@ -107,6 +107,7 @@ public class UserService {
 	
 	//todo login
 	public Mono<User> login(String username, String password){
+		System.out.println(username + password);
 		return r2dbcEntityTemplate.select(User.class)
 				.matching(Query.query(Criteria.where("username").is(username).and("password").is(password)))
 				.one()

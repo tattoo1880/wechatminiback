@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://193.32.150.11", allowCredentials = "true")
+//@CrossOrigin
 @Slf4j
 public class UserController {
 	
