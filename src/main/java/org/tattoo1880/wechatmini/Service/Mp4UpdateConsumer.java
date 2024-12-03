@@ -16,7 +16,7 @@ public class Mp4UpdateConsumer {
 	
 	public Mp4UpdateConsumer() {
 //		this.sink = Sinks.many().multicast().onBackpressureBuffer();
-		this.sink = Sinks.many().replay().limit(10);
+		this.sink = Sinks.many().replay().limit(3);
 	}
 	
 	@RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
